@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PocketFanController"
         mc:Ignorable="d"
-        Title="Pocket Fan Controller" Height="105" Width="310" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Pocket Fan Controller" Height="105" Width="310" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <local:ViewModel />
     </Window.DataContext>
