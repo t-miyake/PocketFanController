@@ -7,4 +7,6 @@ For safety reasons, it returns to the default (automatic) at the end of the appl
 In the unlikely event the hardware may break down.  
 Please use at your own risk.  
 
+You can download from the [release page](https://github.com/t-miyake/PocketFanController/releases).  
+
 ![Screenshot](https://github.com/t-miyake/PocketFanController/blob/master/Screenshot.png)
