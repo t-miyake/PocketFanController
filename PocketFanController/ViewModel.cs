@@ -7,9 +7,10 @@ namespace PocketFanController
         private Model Model = Model.Instance;
 
         public ICommand SetDefault { get; }
-        public ICommand SetLow { get; }
-        public ICommand SetMiddle { get; }
+        public ICommand SetSlow { get; }
         public ICommand SetFast { get; }
+        public ICommand SetFastest { get; }
+        public ICommand SetSlowest { get; }
 
         public ViewModel()
         {
@@ -19,22 +20,28 @@ namespace PocketFanController
                 CurrentState = 0;
             });
 
-            SetLow = new RelayCommand(() =>
+            SetSlow = new RelayCommand(() =>
             {
-                Model.SetLow();
+                Model.SetSlow();
                 CurrentState = 3;
-            });
-
-            SetMiddle = new RelayCommand(() =>
-            {
-                Model.SetMiddle();
-                CurrentState = 2;
             });
 
             SetFast = new RelayCommand(() =>
             {
                 Model.SetFast();
+                CurrentState = 2;
+            });
+
+            SetFastest = new RelayCommand(() =>
+            {
+                Model.SetFastest();
                 CurrentState = 1;
+            });
+
+            SetSlowest = new RelayCommand(() =>
+            {
+                Model.SetSlowest();
+                CurrentState = 4;
             });
 
             Model.GetCurrentStatus();
@@ -64,6 +71,8 @@ namespace PocketFanController
                         return "Current status : Fast";
                     case 3:
                         return "Current status : Slow";
+                    case 4:
+                        return "Current status : Slowest";
                     default:
                         return "Current status : Auto (Default)";
                 }

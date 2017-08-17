@@ -19,7 +19,8 @@ namespace PocketFanController
             var state1 = new[] {99, 99, 10};
             var state2 = new[] {99, 10, 99};
             var state3 = new[] {10, 99, 99};
-            var states = new[] {state0, state1, state2, state3};
+            var state4 = new[] {99, 99, 80};
+            var states = new[] {state0, state1, state2, state3,state4};
 
             var t0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0");
             var t1 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1");
@@ -43,7 +44,7 @@ namespace PocketFanController
             RestartService();
         }
 
-        public void SetLow()
+        public void SetSlow()
         {
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 10);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
@@ -51,7 +52,7 @@ namespace PocketFanController
             RestartService();
         }
 
-        public void SetMiddle()
+        public void SetFast()
         {
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 10);
@@ -59,13 +60,23 @@ namespace PocketFanController
             RestartService();
         }
 
-        public void SetFast()
+        public void SetFastest()
         {
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 10);
             RestartService();
         }
+
+        public void SetSlowest()
+        {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
+            //熱くなりすぎたらファンを全開にする。
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 85);
+            RestartService();
+        }
+
 
         public void WriteReg(string subKey, string keyName, int value)
         {
