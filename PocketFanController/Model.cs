@@ -103,8 +103,8 @@ namespace PocketFanController
         public void RestartService()
         {
             //サービスを停止したり再起動できないので、exeをkillする
-            var oldProcessesprocess = Process.GetProcessesByName("FanMonitorService");
-            foreach (var p in oldProcessesprocess)
+            var oldProcesses = Process.GetProcessesByName("FanMonitorService");
+            foreach (var p in oldProcesses)
             {
                 p.Kill();
             }
