@@ -19,7 +19,7 @@ namespace PocketFanController
             var state1 = new[] {99, 99, 10};
             var state2 = new[] {99, 10, 99};
             var state3 = new[] {10, 99, 99};
-            var state4 = new[] {99, 99, 80};
+            var state4 = new[] {99, 99, 85};
             var states = new[] {state0, state1, state2, state3,state4};
 
             var t0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0");
