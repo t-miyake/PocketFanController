@@ -14,6 +14,7 @@ namespace PocketFanController
 
             toolStripMenuItem_Exit.Click += Exit;
             toolStripMenuItem_OpenWindow.Click += OpenWindow;
+            toolStripMenuItem_OpenAbout.Click += OpenAbout;
 
             toolStripMenuItem_SetDefault.Click += SetDefault;
             toolStripMenuItem_SetFastest.Click += SetFastest;
@@ -69,8 +70,16 @@ namespace PocketFanController
             mainWindow.Show();
         }
 
+        private void OpenAbout(object sender, EventArgs e)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.Show();
+        }
+
         private void UpdateCurrentStatus(object sender, EventArgs e)
         {
+            toolStripMenuItem_CpuTemp.Text = "CPU " + Model.GetCpuTemp() + "℃";
+
             Model.GetCurrentStatus();
 
             switch (Model.CurrentState)

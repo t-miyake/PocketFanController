@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using System.Globalization;
 using Microsoft.Win32;
+using OpenHardwareMonitor.Hardware;
 
 namespace PocketFanController
 {
@@ -122,5 +125,33 @@ namespace PocketFanController
             };
             cmd.Start();
         }
+
+        public string GetCpuTemp()
+        {
+            var computer = new Computer
+            {
+                MainboardEnabled = false,
+                CPUEnabled = true,
+                RAMEnabled = false,
+                GPUEnabled = false,
+                FanControllerEnabled = false,
+                HDDEnabled = false
+            };
+
+            computer.Open();
+
+            var temps = new List<string>();
+
+            foreach (var item in computer.Hardware)
+            {
+                if (item.HardwareType != HardwareType.CPU) continue;
+                item.Update();
+                temps.AddRange(from sensor in item.Sensors where sensor.SensorType == SensorType.Temperature where sensor.Value != null select sensor.Value.Value.ToString(CultureInfo.CurrentCulture));
+            }
+
+            //最初に取得できるのが、現在の温度。
+            return temps[0];
+        }
+
     }
 }
