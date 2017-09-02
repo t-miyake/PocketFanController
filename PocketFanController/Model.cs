@@ -149,6 +149,8 @@ namespace PocketFanController
                 temps.AddRange(from sensor in item.Sensors where sensor.SensorType == SensorType.Temperature where sensor.Value != null select sensor.Value.Value.ToString(CultureInfo.CurrentCulture));
             }
 
+            computer.Close();
+
             //最初に取得できるのが、現在の温度。
             return temps[0];
         }
