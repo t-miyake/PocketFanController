@@ -16,6 +16,19 @@ namespace PocketFanController
 
         public int CurrentState { get; set; } = 0;
 
+        public int ManualMargin { get; set; }
+        public int ManualT0 { get; set; }
+        public int ManualT1 { get; set; }
+        public int ManualT2 { get; set; }
+
+        public void GetManualConfigs()
+        {
+            ManualMargin = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin") == 0 ? 5 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin");
+            ManualT0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0") == 0 ? 40 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0");
+            ManualT1 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1") == 0 ? 60 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1");
+            ManualT2 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2") == 0 ? 75 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2");
+        }
+
         public void GetCurrentStatus()
         {
             var state0 = new[] {40, 60, 75};
@@ -37,10 +50,14 @@ namespace PocketFanController
                     CurrentState = s.Index;
                 }
             }
+
+            if (current.SequenceEqual(states[CurrentState])) return;
+            CurrentState = 5;
         }
 
         public void SetDefault()
         {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", 5);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 40);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 60);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 75);
@@ -49,6 +66,7 @@ namespace PocketFanController
 
         public void SetSlow()
         {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", 5);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 10);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 99);
@@ -57,6 +75,7 @@ namespace PocketFanController
 
         public void SetFast()
         {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", 5);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 10);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 99);
@@ -65,6 +84,7 @@ namespace PocketFanController
 
         public void SetFastest()
         {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", 5);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", 10);
@@ -73,6 +93,7 @@ namespace PocketFanController
 
         public void SetSlowest()
         {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", 5);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", 99);
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", 99);
             //熱くなりすぎたらファンを全開にする。
@@ -80,6 +101,22 @@ namespace PocketFanController
             RestartService();
         }
 
+        public void SetManual()
+        {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2"));
+            RestartService();
+        }
+
+        public void SaveManualConfig(int margin, int t0, int t1, int t2)
+        {
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin", margin);
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0", t0);
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1", t1);
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2", t2);
+        }
 
         public void WriteReg(string subKey, string keyName, int value)
         {
@@ -98,7 +135,6 @@ namespace PocketFanController
             catch
             {
                 return 0;
-
             }
             return 0;
         }

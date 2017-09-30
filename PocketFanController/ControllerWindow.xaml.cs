@@ -3,11 +3,11 @@
 namespace PocketFanController
 {
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// ControllerWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ControllerWindow : Window
     {
-        public MainWindow()
+        public ControllerWindow()
         {
             InitializeComponent();
         }

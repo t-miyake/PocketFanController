@@ -14,9 +14,11 @@ namespace PocketFanController
 
             toolStripMenuItem_Exit.Click += Exit;
             toolStripMenuItem_OpenWindow.Click += OpenWindow;
+            toolStripMenuItem_OpenConfig.Click += OpenConfig;
             toolStripMenuItem_OpenAbout.Click += OpenAbout;
 
             toolStripMenuItem_SetDefault.Click += SetDefault;
+            toolStripMenuItem_SetManual.Click += SetManual;
             toolStripMenuItem_SetFastest.Click += SetFastest;
             toolStripMenuItem_SetFast.Click += SetFast;
             toolStripMenuItem_SetSlow.Click += SetSlow;
@@ -34,39 +36,23 @@ namespace PocketFanController
             InitializeComponent();
         }
 
-        private void SetDefault (object sender, EventArgs e)
-        {
-            Model.SetDefault();
-        }
+        private void SetDefault (object sender, EventArgs e) => Model.SetDefault();
 
-        private void SetFastest(object sender, EventArgs e)
-        {
-            Model.SetFastest();
-        }
+        private void SetManual(object sender, EventArgs e) => Model.SetManual();
 
-        private void SetFast(object sender, EventArgs e)
-        {
-            Model.SetFast();
-        }
+        private void SetFastest(object sender, EventArgs e) => Model.SetFastest();
 
-        private void SetSlow(object sender, EventArgs e)
-        {
-            Model.SetSlow();
-        }
+        private void SetFast(object sender, EventArgs e) => Model.SetFast();
 
-        private void SetSlowest(object sender, EventArgs e)
-        {
-            Model.SetSlowest();
-        }
+        private void SetSlow(object sender, EventArgs e) => Model.SetSlow();
 
-        private void Exit(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        private void SetSlowest(object sender, EventArgs e) => Model.SetSlowest();
+
+        private void Exit(object sender, EventArgs e) => Application.Current.Shutdown();
 
         private void OpenWindow(object sender, EventArgs e)
         {
-            var mainWindow = new MainWindow();
+            var mainWindow = new ControllerWindow();
             mainWindow.Show();
         }
 
@@ -74,6 +60,12 @@ namespace PocketFanController
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.Show();
+        }
+
+        private void OpenConfig(object sender, EventArgs e)
+        {
+            var configWindow = new ConfigWindow();
+            configWindow.Show();
         }
 
         private void UpdateCurrentStatus(object sender, EventArgs e)
@@ -86,13 +78,15 @@ namespace PocketFanController
             {
                 case 0:
                     toolStripMenuItem_SetDefault.Checked = true;
-                    toolStripMenuItem_SetFastest.Checked=false;
+                    toolStripMenuItem_SetManual.Checked = false;
+                    toolStripMenuItem_SetFastest.Checked = false;
                     toolStripMenuItem_SetFast.Checked = false;
                     toolStripMenuItem_SetSlow.Checked = false;
                     toolStripMenuItem_SetSlowest.Checked = false;
                     break;
                 case 1:
                     toolStripMenuItem_SetDefault.Checked = false;
+                    toolStripMenuItem_SetManual.Checked = false;
                     toolStripMenuItem_SetFastest.Checked = true;
                     toolStripMenuItem_SetFast.Checked = false;
                     toolStripMenuItem_SetSlow.Checked = false;
@@ -100,6 +94,7 @@ namespace PocketFanController
                     break;
                 case 2:
                     toolStripMenuItem_SetDefault.Checked = false;
+                    toolStripMenuItem_SetManual.Checked = false;
                     toolStripMenuItem_SetFastest.Checked = false;
                     toolStripMenuItem_SetFast.Checked = true;
                     toolStripMenuItem_SetSlow.Checked = false;
@@ -107,6 +102,7 @@ namespace PocketFanController
                     break;
                 case 3:
                     toolStripMenuItem_SetDefault.Checked = false;
+                    toolStripMenuItem_SetManual.Checked = false;
                     toolStripMenuItem_SetFastest.Checked = false;
                     toolStripMenuItem_SetFast.Checked = false;
                     toolStripMenuItem_SetSlow.Checked = true;
@@ -114,13 +110,23 @@ namespace PocketFanController
                     break;
                 case 4:
                     toolStripMenuItem_SetDefault.Checked = false;
+                    toolStripMenuItem_SetManual.Checked = false;
                     toolStripMenuItem_SetFastest.Checked = false;
                     toolStripMenuItem_SetFast.Checked = false;
                     toolStripMenuItem_SetSlow.Checked = false;
                     toolStripMenuItem_SetSlowest.Checked = true;
                     break;
+                case 5:
+                    toolStripMenuItem_SetDefault.Checked = false;
+                    toolStripMenuItem_SetManual.Checked = true;
+                    toolStripMenuItem_SetFastest.Checked = false;
+                    toolStripMenuItem_SetFast.Checked = false;
+                    toolStripMenuItem_SetSlow.Checked = false;
+                    toolStripMenuItem_SetSlowest.Checked = false;
+                    break;
                 default:
                     toolStripMenuItem_SetDefault.Checked = true;
+                    toolStripMenuItem_SetManual.Checked = false;
                     toolStripMenuItem_SetFastest.Checked = false;
                     toolStripMenuItem_SetFast.Checked = false;
                     toolStripMenuItem_SetSlow.Checked = false;
