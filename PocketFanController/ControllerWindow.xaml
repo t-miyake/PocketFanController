@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PocketFanController"
         mc:Ignorable="d"
-        Title="Pocket Fan Controller" Height="100" Width="462" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="Icon.ico" ShowInTaskbar="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+        Title="Pocket Fan Controller" Height="100" Width="464" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="Icon.ico" ShowInTaskbar="False" ScrollViewer.VerticalScrollBarVisibility="Disabled">
     <Window.DataContext>
         <local:ControllerWindowViewModel />
     </Window.DataContext>
     <StackPanel>
         <Label x:Name="CurrentStatus" Content="{Binding CurrentStateText,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Left">
-            <Button x:Name="SetDefault" Content="Auto (Default)" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Command="{Binding SetDefault}" Margin="5,0,10,0" HorizontalContentAlignment="Center" />
-            <Button x:Name="SetManual" Content="Auto (Manual)" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100" Command="{Binding SetDefault}" Margin="5,0" HorizontalContentAlignment="Center" />
+            <Button x:Name="SetDefault" Content="Auto (Default)" HorizontalAlignment="Left" VerticalAlignment="Center" Width="101" Command="{Binding SetDefault}" Margin="5,0,10,0" HorizontalContentAlignment="Center" />
+            <Button x:Name="SetManual" Content="Auto (Manual)" HorizontalAlignment="Left" VerticalAlignment="Center" Width="101" Command="{Binding SetManual}" Margin="5,0" HorizontalContentAlignment="Center" />
             <Button x:Name="SetSlowest" Content="Slowest" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="45" Command="{Binding SetSlowest}" Margin="5,0"/>
             <Button x:Name="SetSlow" Content="Slow" HorizontalAlignment="Left"  VerticalAlignment="Center" Width="45" Command="{Binding SetSlow}" Margin="5,0"/>
             <Button x:Name="SetFast" Content="Fast" HorizontalAlignment="Left" VerticalAlignment="Center" Width="45" Command="{Binding SetFast}" Margin="5,0"/>
