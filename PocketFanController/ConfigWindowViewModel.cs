@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PocketFanController
@@ -11,6 +12,8 @@ namespace PocketFanController
         public ICommand OkButton { get; }
         public ICommand CancelButton { get; }
         public ICommand ApplyButton { get; }
+
+        public Action CloseAction { get; set; }
 
         public int Margin
         {
@@ -64,7 +67,7 @@ namespace PocketFanController
             {
                 Model.SaveManualConfig(Margin, BorderOfSlow, BorderOfFast, BorderOfFastest);
                 SetManual();
-                Application.Current.MainWindow.Close();
+                CloseAction();
             });
 
             ApplyButton = new RelayCommand(() =>
@@ -76,7 +79,7 @@ namespace PocketFanController
 
             CancelButton = new RelayCommand(() =>
             {
-                Application.Current.MainWindow.Close();
+                CloseAction();
             });
 
             Model.GetManualConfigs();
