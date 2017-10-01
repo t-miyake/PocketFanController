@@ -62,13 +62,15 @@ namespace PocketFanController
 
             OkButton = new RelayCommand(() =>
             {
-                Model.SaveManualConfig(Margin,BorderOfSlow,BorderOfFast,BorderOfFastest);
+                Model.SaveManualConfig(Margin, BorderOfSlow, BorderOfFast, BorderOfFastest);
+                SetManual();
                 Application.Current.MainWindow.Close();
             });
 
             ApplyButton = new RelayCommand(() =>
             {
                 Model.SaveManualConfig(Margin, BorderOfSlow, BorderOfFast, BorderOfFastest);
+                SetManual();
                 MessageBox.Show("Apply completed.");
             });
 
@@ -79,6 +81,14 @@ namespace PocketFanController
 
             Model.GetManualConfigs();
             UpdateStatus();
+        }
+
+        private void SetManual()
+        {
+            if (Model.CurrentState == 5)
+            {
+                Model.SetManual();
+            }
         }
 
         private void UpdateStatus()

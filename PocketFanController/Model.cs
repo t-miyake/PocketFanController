@@ -51,8 +51,11 @@ namespace PocketFanController
                 }
             }
 
-            if (current.SequenceEqual(states[CurrentState])) return;
-            CurrentState = 5;
+            if (CurrentState != 5)
+            {
+                if (current.SequenceEqual(states[CurrentState])) return;
+                CurrentState = 5;
+            }
         }
 
         public void SetDefault()
