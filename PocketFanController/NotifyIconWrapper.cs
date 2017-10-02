@@ -27,6 +27,9 @@ namespace PocketFanController
             //ちょっと無理やりだけど、アイコンをクリックするたびにステータスを更新する
             notifyIcon1.Click += UpdateCurrentStatus;
 
+            //前回終了時の状態を復元する。
+            Model.LoadAndResetLastState();
+
             UpdateCurrentStatus(null,null);
         }
 

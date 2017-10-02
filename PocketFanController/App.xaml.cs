@@ -17,6 +17,9 @@ namespace PocketFanController
         }
         protected override void OnExit(ExitEventArgs e)
         {
+            //現在の状態を保存する。(再起動時に復元できるように)
+            Model.Instance.SaveLastState();
+
             //アプリケーション終了時にデフォルト設定に戻す。(安全のため)
             Model.Instance.SetDefault();
 

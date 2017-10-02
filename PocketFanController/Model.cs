@@ -12,6 +12,7 @@ namespace PocketFanController
     {
         // Singleton instance.
         public static Model Instance { get; } = new Model();
+
         private Model(){}
 
         public int CurrentState { get; set; } = 0;
@@ -23,10 +24,18 @@ namespace PocketFanController
 
         public void GetManualConfigs()
         {
-            ManualMargin = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin") == 0 ? 5 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin");
-            ManualT0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0") == 0 ? 40 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0");
-            ManualT1 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1") == 0 ? 60 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1");
-            ManualT2 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2") == 0 ? 75 : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2");
+            ManualMargin = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin") == 0
+                ? 5
+                : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin");
+            ManualT0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0") == 0
+                ? 40
+                : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0");
+            ManualT1 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1") == 0
+                ? 60
+                : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1");
+            ManualT2 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2") == 0
+                ? 75
+                : ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2");
         }
 
         public void GetCurrentStatus()
@@ -36,7 +45,7 @@ namespace PocketFanController
             var state2 = new[] {99, 10, 99};
             var state3 = new[] {10, 99, 99};
             var state4 = new[] {99, 99, 85};
-            var states = new[] {state0, state1, state2, state3,state4};
+            var states = new[] {state0, state1, state2, state3, state4};
 
             var t0 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0");
             var t1 = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1");
@@ -106,10 +115,14 @@ namespace PocketFanController
 
         public void SetManual()
         {
-            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin"));
-            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0"));
-            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1"));
-            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2", ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "margin",
+                ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedmargin"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t0",
+                ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt0"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t1",
+                ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt1"));
+            WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "t2",
+                ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2"));
             RestartService();
         }
 
@@ -121,7 +134,38 @@ namespace PocketFanController
             WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "savedt2", t2);
         }
 
-        public void WriteReg(string subKey, string keyName, int value)
+        public void SaveLastState() => WriteReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "laststate",CurrentState);
+
+        public void LoadAndResetLastState()
+        {
+            var lastState = ReadReg(@"SYSTEM\CurrentControlSet\Services\wfan0109", "laststate");
+            switch (lastState)
+            {
+                case 0:
+                    SetDefault();
+                    break;
+                case 1:
+                    SetFastest();
+                    break;
+                case 2:
+                    SetFast();
+                    break;
+                case 3:
+                    SetSlow();
+                    break;
+                case 4:
+                    SetSlowest();
+                    break;
+                case 5:
+                    SetManual();
+                    break;
+                default:
+                    SetDefault();
+                    break;
+            }
+        }
+
+    public void WriteReg(string subKey, string keyName, int value)
         {
             var key = Registry.LocalMachine.CreateSubKey(subKey);
             key?.SetValue(keyName, value, RegistryValueKind.DWord);
